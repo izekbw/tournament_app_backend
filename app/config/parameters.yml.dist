@@ -1,0 +1,14 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_host: sql.serwer1991709.home.pl
+    database_port: 3306
+    database_name: 29606898_zut_praca_inz
+    database_user: 29606898_zut_praca_inz
+    database_password: Smietana12
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: bartekw
+    mailer_password: bartekw
+    secret: a39769bc3c6289bf3cc2b28ccd4ffb673157b
