@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\Game;
-use Ramsey\Uuid\Uuid;
 
 class GameController extends FOSRestController
 {
@@ -37,5 +36,15 @@ class GameController extends FOSRestController
             );
         }
         return new JsonResponse(["games"=>$gamesArray],200);
+    }
+
+    /**
+     * @param string $id
+     * @return object|void
+     */
+    public function get($id)
+    {
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Game');
+        $game = $repository->find($id);
     }
 }

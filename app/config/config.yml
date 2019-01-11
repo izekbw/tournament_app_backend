@@ -95,6 +95,8 @@ fos_rest:
             json: true
 
 easy_admin:
+    site_name: 'Admin Panel'
     entities:
         - AppBundle\Entity\User
         - AppBundle\Entity\Game
+        - AppBundle\Entity\Tournament
