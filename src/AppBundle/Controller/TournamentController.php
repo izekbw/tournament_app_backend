@@ -31,6 +31,7 @@ class TournamentController extends FOSRestController
                 'game_id' => $tournament->getGameId(),
                 'teams_number' => $tournament->getTeamsNumber(),
                 'is_completed' => $tournament->getIsCompleted(),
+                'is_started' => $tournament->getIsStarted(),
                 'description' => $tournament->getDescription(),
             );
         }
@@ -38,40 +39,63 @@ class TournamentController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("/api/tournament/getOpenWithGame")
+     * @Rest\Get("/api/tournament/getActiveForGame")
+     * @param $request
      * @throws \Exception
      * @return JsonResponse
      */
-    public function getAllOpenWithGame()
+    public function getActiveForGame(Request $request)
     {
+        $gameId = $request->query->get('gameId');
         $repository = $this->getDoctrine()->getRepository('AppBundle:Tournament');
         $gameRepository = $this->getDoctrine()->getRepository('AppBundle:Game');
 
         $tournamentsCollection = $repository->findBy([
+            'gameId' => $gameId,
             'isCompleted' => false,
         ]);
 
-        $tournamentsArray = [];
+        $openTournaments = [];
+        $startedTournaments = [];
 
         foreach ($tournamentsCollection as $tournament) {
             $game = $gameRepository->find($tournament->getGameId());
-
-            $tournamentsArray[] = array(
-                'id' => $tournament->getId(),
-                'name' => $tournament->getName(),
-                'game_id' => $tournament->getGameId(),
-                'teams_number' => $tournament->getTeamsNumber(),
-                'is_completed' => $tournament->getIsCompleted(),
-                'description' => $tournament->getDescription(),
-                'game' => [
-                    'id' => $game->getId(),
-                    'name' => $game->getName(),
-                    'shortName' => $game->getShortName(),
-                    'imageUrl' => $game->getImageUrl(),
-                    'logoUrl' => $game->getLogoUrl(),
-                ]
-            );
+            if ($tournament->getIsStarted()) {
+                $startedTournaments[] = array(
+                    'id' => $tournament->getId(),
+                    'name' => $tournament->getName(),
+                    'game_id' => $tournament->getGameId(),
+                    'teams_number' => $tournament->getTeamsNumber(),
+                    'is_completed' => $tournament->getIsCompleted(),
+                    'is_started' => $tournament->getIsStarted(),
+                    'description' => $tournament->getDescription(),
+                    'game' => [
+                        'id' => $game->getId(),
+                        'name' => $game->getName(),
+                        'shortName' => $game->getShortName(),
+                        'imageUrl' => $game->getImageUrl(),
+                        'logoUrl' => $game->getLogoUrl(),
+                    ]
+                );
+            } else {
+                $openTournaments[] = array(
+                    'id' => $tournament->getId(),
+                    'name' => $tournament->getName(),
+                    'game_id' => $tournament->getGameId(),
+                    'teams_number' => $tournament->getTeamsNumber(),
+                    'is_completed' => $tournament->getIsCompleted(),
+                    'is_started' => $tournament->getIsStarted(),
+                    'description' => $tournament->getDescription(),
+                    'game' => [
+                        'id' => $game->getId(),
+                        'name' => $game->getName(),
+                        'shortName' => $game->getShortName(),
+                        'imageUrl' => $game->getImageUrl(),
+                        'logoUrl' => $game->getLogoUrl(),
+                    ]
+                );
+            }
         }
-        return new JsonResponse(["tournaments"=>$tournamentsArray],200);
+        return new JsonResponse(["startedTournaments"=>$startedTournaments, "openTournaments"=>$openTournaments],200);
     }
 }

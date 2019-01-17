@@ -50,6 +50,13 @@ class Tournament
     private $isCompleted;
 
     /**
+     * @var bool|null
+     *
+     * @ORM\Column(name="is_started", type="boolean", nullable=true, options={"default" : false})
+     */
+    private $isStarted;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
@@ -163,6 +170,30 @@ class Tournament
         return $this->isCompleted;
     }
 
+    /**
+     * Set isStarted.
+     *
+     * @param bool|null $isStarted
+     *
+     * @return Tournament
+     */
+    public function setIsStarted($isStarted = null)
+    {
+        $this->isStarted = $isStarted;
+
+        return $this;
+    }
+
+    /**
+     * Get isStarted.
+     *
+     * @return bool|null
+     */
+    public function getIsStarted()
+    {
+        return $this->isStarted;
+    }
+    
     /**
      * Set description.
      *
