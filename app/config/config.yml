@@ -102,3 +102,5 @@ easy_admin:
         - AppBundle\Entity\Tournament
         - AppBundle\Entity\TeamMembers
         - AppBundle\Entity\Team
+        - AppBundle\Entity\tournament_teams
+        - AppBundle\Entity\tournament_bracket_team
